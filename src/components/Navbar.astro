@@ -1,0 +1,252 @@
+---
+import { Image } from "astro:assets";
+import logoPalma from '../assets/logo_soldepalma.webp';
+---
+
+<nav class="nav-container">
+  <div class="nav-content">
+    
+    <a href="/" class="logo-link">
+      <Image 
+        src={logoPalma} 
+        alt="Sol de Palma Logo" 
+        class="logo-img" 
+        loading="eager" 
+        fetchpriority="high"
+      />
+    </a>
+
+    <button id="menu-toggle" class="hamburger" aria-label="Abrir menú">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+
+    <div id="nav-menu" class="nav-links-wrapper">
+      
+      <ul class="nav-links">
+        <li><a href="/nosotros">NOSOTROS</a></li>
+        <li><a href="/cadena">CADENA INTEGRADA</a></li>
+        <li><a href="/sostenibilidad">SOSTENIBILIDAD</a></li>
+        <li><a href="/palma">PALMA ORGÁNICA</a></li>
+        <li><a href="/productos">PRODUCTOS</a></li>
+      </ul>
+
+      <div class="lang-dropdown">
+        <button class="lang-trigger" aria-haspopup="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m13 19l3.5-9l3.5 9m-6.125-2h5.25M3 7h7m0 0h2m-2 0c0 1.63-.793 3.926-2.239 5.655M7.5 6.818V5m.261 7.655C6.79 13.82 5.521 14.725 4 15m3.761-2.345L5 10m2.761 2.655L10.2 15"/></svg>
+          <span class="lang-text">Español</span>
+          <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 9l6 6l6-6"/></svg>
+        </button>
+        
+        <div class="lang-options">
+          <a href="#" class="lang-item active">
+             <span class="flag">🇪🇸</span> Español
+          </a>
+          <a href="#" class="lang-item">
+             <span class="flag">🇺🇸</span> English
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</nav>
+
+<script>
+  const menuToggle = document.getElementById('menu-toggle');
+  const navMenu = document.getElementById('nav-menu');
+
+  if (menuToggle && navMenu) {
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('active');
+      navMenu.classList.toggle('active');
+    });
+  }
+</script>
+
+<style>
+  /* --- ESTILOS BASE --- */
+  .nav-container {
+    background: rgba(60, 56, 52, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    margin: 20px auto;
+    width: calc(100% - 100px);
+    max-width: 1400px;
+    padding: 10px 30px;
+    color: white;
+    font-family: "Nunito", sans-serif;
+    position: relative;
+    z-index: 100;
+  }
+
+  .nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo-img { height: 45px; width: auto; flex-shrink: 0; }
+
+  /* --- SELECTOR DE IDIOMA (Glassmorphism) --- */
+  .lang-dropdown {
+    position: relative; /* Clave para el posicionamiento absoluto del hijo */
+    display: inline-block;
+  }
+
+  .lang-trigger {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    color: white;
+    padding: 6px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+  }
+
+  .lang-trigger:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: white;
+  }
+
+  .lang-trigger .arrow {
+    transition: transform 0.3s ease;
+  }
+
+  /* El Dropdown que flota */
+  .lang-options {
+    position: absolute;
+    top: 120%;
+    right: 0; /* Se alinea a la derecha del botón */
+    width: 130px;
+    background: rgba(60, 56, 52, 0.8);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  }
+
+  /* Mostrar al hacer HOVER */
+  .lang-dropdown:hover .lang-options {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .lang-dropdown:hover .arrow {
+    transform: rotate(180deg);
+  }
+
+  .lang-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    border-radius: 10px;
+    transition: background 0.2s;
+  }
+
+  .lang-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .lang-item.active {
+    color: #ff8905;
+    font-weight: bold;
+  }
+
+  .flag { font-size: 1rem; }
+
+  /* --- MEDIA QUERIES & NAV LINKS --- */
+  .nav-links-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex-grow: 1;
+  }
+
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    position: relative;
+    transition: color 0.3s ease;
+    display: inline-block;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #ff8905;
+    bottom: -6px;
+    left: 0;
+    transform: scaleX(0); 
+    transition: transform 0.3s ease;
+    box-shadow: 0 0 8px rgba(255, 137, 5, 0.6);
+  }
+  .nav-links a:hover {
+    color: #ff8905; /* El texto cambia a naranja */
+  }
+  
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* --- MOBILE STYLES --- */
+  @media (max-width: 1439px) {
+    .hamburger { display: flex; }
+    .nav-links-wrapper {
+      position: absolute;
+      top: 160%; left: 0; width: 100%;
+      background: rgba(60, 56, 52, 0.9);
+      flex-direction: column;
+      padding: 30px 0;
+      opacity: 0; visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      border-radius: 20px;
+    }
+    .nav-links-wrapper.active { opacity: 1; visibility: visible; transform: translateY(0); }
+    .nav-links { flex-direction: column; margin-bottom: 20px; }
+    .lang-options { right: 50%; transform: translateX(50%) translateY(-10px); }
+    .lang-dropdown:hover .lang-options { transform: translateX(50%) translateY(0); }
+  }
+
+  @media (min-width: 1440px) {
+    .hamburger { display: none; }
+  }
+
+  /* Animación hamburguesa */
+  .hamburger { flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; display: none; }
+  .bar { width: 25px; height: 3px; background-color: white; transition: 0.3s; }
+  .hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+  .hamburger.active .bar:nth-child(2) { opacity: 0; }
+  .hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+</style>
