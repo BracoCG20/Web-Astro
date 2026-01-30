@@ -1,0 +1,266 @@
+---
+import { Image } from "astro:assets";
+
+// IMPORTANTE: Reemplaza estas importaciones con tus imágenes reales de botellas
+// Si no las tienes, usa cualquier imagen temporal para probar el diseño.
+import bottle1 from '../assets/producto1.png'; 
+import bottle2 from '../assets/producto2.png';
+import bottle3 from '../assets/producto3.png';
+import bottle4 from '../assets/producto4.png';
+    
+const products = [
+  {
+    title: "ACEITE CRUDO DE PALMA",
+    img: bottle1,
+    organic: false
+  },
+  {
+    title: "ACEITE CRUDO DE PALMISTE",
+    img: bottle2,
+    organic: false
+  },
+  {
+    title: "ACEITE CRUDO DE PALMA ORGÁNICA",
+    img: bottle3,
+    organic: true // Este tendrá el sticker verde
+  },
+  {
+    title: "DERIVADOS DE PALMA",
+    img: bottle4,
+    organic: false
+  }
+];
+---
+
+<section class="products-section" id="productos">
+  <div class="petals-bg left"></div>
+  <div class="petals-bg right"></div>
+
+  <div class="container">
+    
+    <div class="section-header">
+      <div class="orange-dash"></div>
+      <h2>PRODUCTOS</h2>
+    </div>
+
+    <div class="products-grid">
+      {products.map((item) => (
+        <a href="/productos" class="product-card">
+          
+          <div class="card-glass">
+            
+            {item.organic && (
+              <div class="organic-badge">
+                <span>PALMA<br>ORGÁNICA</span>
+              </div>
+            )}
+
+            <div class="img-wrapper">
+              <Image src={item.img} alt={item.title} class="bottle-img" />
+            </div>
+            
+            <div class="product-label">
+              <h3>{item.title}</h3>
+            </div>
+          </div>
+
+        </a>
+      ))}
+    </div>
+
+    <div class="cta-container">
+      <a href="/productos" class="cta-button orange-outline">CONOCE MÁS</a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* --- ESTRUCTURA GENERAL --- */
+  .products-section {
+    position: relative;
+    padding: 100px 20px;
+    background-color: #ffffff;
+    /* Eliminamos overflow:hidden aquí para que se vean los pétalos en los bordes */
+    font-family: 'Nunito', sans-serif;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10; /* Z-index alto para asegurar que esté por encima */
+  }
+
+  /* --- DECORACIÓN DE FONDO (Pétalos/Puntos) --- */
+  .petals-bg {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 300px;
+    height: 70%; /* Un poco más alto */
+    background-image: radial-gradient(circle, rgba(255, 137, 5, 0.15) 10%, transparent 10.5%),
+                      radial-gradient(circle, rgba(255, 69, 0, 0.15) 10%, transparent 10.5%);
+    background-size: 40px 40px; /* Puntos un poco más pequeños y juntos */
+    background-position: 0 0, 20px 20px;
+    opacity: 0.6;
+    z-index: 0; /* Z-index bajo */
+    
+    /* --- LA SOLUCIÓN --- */
+    /* Esto hace que el mouse "atraviese" la decoración y detecte las tarjetas debajo */
+    pointer-events: none; 
+    mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+  }
+  .petals-bg.left { left: 0; }
+  .petals-bg.right { right: 0; }
+
+  /* --- TÍTULO --- */
+  .section-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 60px;
+  }
+
+  .orange-dash {
+    width: 60px;
+    height: 4px;
+    background-color: #ff4500;
+    margin-bottom: 15px;
+    border-radius: 2px;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #333;
+    margin: 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* --- GRID DE PRODUCTOS --- */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 40px;
+    margin-bottom: 60px;
+    justify-content: center;
+    position: relative;
+    z-index: 11; /* Aseguramos que el grid esté por encima de la decoración */
+  }
+
+  /* --- TARJETA DE PRODUCTO (Glassmorphism + Forma Hoja) --- */
+  .product-card {
+    position: relative;
+    text-decoration: none;
+    display: block;
+    transition: transform 0.4s ease;
+    cursor: pointer; /* Forzamos el cursor de mano */
+  }
+
+  .card-glass {
+    position: relative;
+    height: 400px;
+    background: rgba(245, 245, 245, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 60px 0 60px 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: all 0.4s ease;
+  }
+
+  /* Hover Effects */
+  .product-card:hover .card-glass {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(255, 69, 0, 0.15);
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  /* Imagen */
+  .img-wrapper {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+  }
+
+  .bottle-img {
+    height: 220px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+    transition: transform 0.4s ease;
+  }
+
+  .product-card:hover .bottle-img {
+    transform: scale(1.1);
+  }
+
+  /* Etiqueta Inferior Naranja */
+  .product-label {
+    background: #ff4500;
+    background: linear-gradient(135deg, #ff4500, #ff8905);
+    padding: 20px 15px;
+    text-align: center;
+    color: white;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .product-label h3 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+  }
+
+  /* --- BADGE ORGÁNICO --- */
+  .organic-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 50px;
+    height: 50px;
+    background-color: #00a651;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 0.5rem;
+    text-align: center;
+    border: 2px solid white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    z-index: 10;
+    transform: rotate(15deg);
+  }
+
+  /* --- CTA BUTTON --- */
+  .cta-container { text-align: center; }
+  .cta-button { display: inline-block; padding: 12px 40px; border-radius: 50px; font-weight: 800; text-decoration: none; text-transform: uppercase; font-size: 0.9rem; transition: all 0.3s ease; cursor: pointer; }
+  .orange-outline { background: transparent; border: 2px solid #ff4500; color: #ff4500; }
+  .orange-outline:hover { background-color: #ff4500; color: #ffffff; box-shadow: 0 5px 20px rgba(255, 69, 0, 0.3); transform: translateY(-2px); }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 900px) {
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 600px) {
+    .products-grid { grid-template-columns: 1fr; padding: 0 40px; }
+    .petals-bg { display: none; }
+  }
+</style>
