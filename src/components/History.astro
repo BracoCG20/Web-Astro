@@ -1,0 +1,351 @@
+---
+import { Image } from "astro:assets";
+
+// Importamos las imágenes
+import historiaImg1 from '../assets/historia1.png';
+import historiaImg2 from '../assets/historia2.png';
+import historiaImg3 from '../assets/historia3.png';
+import historiaImg4 from '../assets/historia4.png';
+
+const dataServidor = {
+  '1950': {
+    title: "EL CULTIVO ILÍCITO EN EL PAÍS",
+    desc: "En lo más profundo de la selva peruana, la sombra del cultivo ilícito se apoderó de nuestras comunidades, trayendo consigo tristeza, violencia, abandono y pobreza. Fue una época oscura donde la agricultura legal no tenía espacio.",
+    quote: "La vida en la época de la coca era muy violenta, todos andaban con miedo.",
+    quoteAuthor: "- Palmicultores de Tocache, Perú",
+    image: historiaImg1.src
+  },
+  '1970': {
+    title: "SEMBRANDO NUEVAS OPORTUNIDADES",
+    desc: "En los años 70, el gobierno perunao incentivo la siembra de palma aceitera, un cultivo noble que prometía ser una alternativa económicaente viable para nuestra comunidad.",
+    quote: "Cuando empezó a producirse la palma, la economía mejoró...nuestros hijos ya tenían ropa para ir a la escuela.",
+    quoteAuthor: "- Palmicultores de Aguaytia, Perú",
+    image: historiaImg2.src
+  },
+  '1990': {
+    title: "EL AUGE DE LA PALMA ACEITERA",
+    desc: "En los años 90, con la ayuda de la ONU y diversas entidades, comenzamos a cultivar la palma, dejando atrás la sombra del cultivo ilícito para abrazar un futuro de formalidad, progreso y seguridad.",
+    quote: "La palma ha cambiado la calidad de vida de las personas, ahora vivimos sin temores.",
+    quoteAuthor: "- Palmicultores de Neshuya, Perú",
+    image: historiaImg3.src
+  },
+  '2014': {
+    title: "CÓMO NACE SOL DE PALMA",
+    desc: "Nacemos como aliado estratégico entre los palmicultores peruanos y el mercado internacional. Hoy nuestras actividades con la palma no solo generan ingresos y trabajo, sino también un impacto positivo, social y ambiental a lo largo de la cadena.",
+    quote: "Nuestro compromiso es con el desarrollo sostenible de nuestras comunidades y el cuidado del medio ambiente.",
+    quoteAuthor: "",
+    image: historiaImg4.src
+  }
+};
+---
+
+<section class="history-section" id="historia">
+  <div class="container">
+    
+    <h2 class="section-title">
+      LA HISTORIA DE LA PALMA <span class="highlight">EN EL PERÚ</span>
+    </h2>
+
+    <div class="glass-card">
+      
+      <div class="content-grid">
+        
+        <div class="text-content">
+          <div class="top-info">
+            <span class="year-label">1950</span>
+            <h3 id="history-title">EL CULTIVO ILÍCITO EN EL PAÍS</h3>
+            <p id="history-desc">
+              En lo más profundo de la selva peruana, la sombra del cultivo ilícito se apoderó de nuestras comunidades, trayendo consigo tristeza, violencia, abandono y pobreza. Fue una época oscura donde la agricultura legal no tenía espacio.
+            </p>
+          </div>
+          
+          <div class="quote-box">
+            <span class="quote-mark">“</span>
+            <p id="history-quote">La vida en la época de la coca era muy violenta, todos andaban con miedo.</p>
+            <span class="quote-author">- Palmicultores de Tocache, Perú</span>
+          </div>
+        </div>
+
+        <div class="image-content">
+          <div class="img-container">
+             <img id="history-img" src={historiaImg1.src} alt="Historia Sol de Palma" />
+             <div class="overlay-gradient"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="timeline-nav">
+        <button class="year-btn active" data-year="1950">1950</button>
+        <div class="line"></div>
+        <button class="year-btn" data-year="1970">1970</button>
+        <div class="line"></div>
+        <button class="year-btn" data-year="1990">1990</button>
+        <div class="line"></div>
+        <button class="year-btn" data-year="2014">2014</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ dataServidor }}>
+  const buttons = document.querySelectorAll('.year-btn');
+  const titleEl = document.getElementById('history-title');
+  const descEl = document.getElementById('history-desc');
+  const quoteEl = document.getElementById('history-quote');
+  const quoteAuthorEl = document.querySelector('.quote-author');
+  const yearLabel = document.querySelector('.year-label');
+  const imgEl = document.getElementById('history-img');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Remover clase active de todos
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const year = btn.getAttribute('data-year');
+      if (!year || !dataServidor[year]) return;
+      const data = dataServidor[year];
+
+      if (titleEl && descEl && quoteEl && quoteAuthorEl && yearLabel && imgEl) {
+        // Animación de salida
+        titleEl.style.opacity = '0';
+        descEl.style.opacity = '0';
+        quoteEl.style.opacity = '0';
+        quoteAuthorEl.style.opacity = '0';
+        imgEl.style.opacity = '0.5';
+
+        setTimeout(() => {
+          // Cambio de contenido
+          titleEl.innerText = data.title;
+          descEl.innerText = data.desc;
+          quoteEl.innerText = data.quote;
+          quoteAuthorEl.innerText = data.quoteAuthor;
+          yearLabel.innerText = year;
+          imgEl.setAttribute('src', data.image);
+          
+          // Animación de entrada
+          titleEl.style.opacity = '1';
+          descEl.style.opacity = '1';
+          quoteEl.style.opacity = '1';
+          quoteAuthorEl.style.opacity = '1';
+          imgEl.style.opacity = '1';
+        }, 300);
+      }
+    });
+  });
+</script>
+
+<style>
+  .history-section {
+    position: relative;
+    padding: 80px 20px;
+    background-color: #2b2926;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 90vh; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Nunito', sans-serif;
+    position: relative;
+  }
+  .history-section::after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #1a181667;
+    z-index: 0;
+  }
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    z-index: 1;
+  }
+  .section-title {
+    text-align: center;
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+  }
+  .highlight { color: #ff8905; }
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    padding: 40px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    min-height: 600px; 
+    justify-content: space-between;
+    z-index: 100;
+  }
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr; 
+    gap: 60px;
+    height: 100%;
+    flex-grow: 1;
+  }
+  .text-content {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    height: 100%;
+  }
+  .year-label {
+    font-size: 4rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.05);
+    line-height: 1;
+    display: block;
+    margin-bottom: -15px;
+  }
+  .text-content h3 {
+    font-size: 2rem;
+    color: #ff8905;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    transition: opacity 0.3s ease;
+    min-height: 64px;
+    display: flex;
+    align-items: end;
+  }
+  .text-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #d1d1d1;
+    margin-bottom: 10px;
+    transition: opacity 0.3s ease;
+  }
+  .quote-box {
+    background: rgba(0, 0, 0, 0.2);
+    border-left: 4px solid #ff8905;
+    padding: 25px;
+    border-radius: 5px 10px 10px 5px;
+    position: relative;
+    margin-top: auto;
+  }
+  .quote-mark {
+    font-size: 3rem;
+    color: #ff8905;
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    font-family: serif;
+    opacity: 0.5;
+  }
+  .quote-author {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: opacity 0.3s ease;
+  }
+  .image-content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .img-container {
+    width: 100%;
+    height: 400px; 
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    background-color: #000;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: filter 0.5s ease, opacity 0.3s ease;
+  }
+  .img-container:hover img {
+    filter: grayscale(0%);
+  }
+  .overlay-gradient {
+    position: absolute;
+    bottom: 0; left: 0; width: 100%; height: 40%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    pointer-events: none;
+  }
+  .timeline-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 20px;
+  }
+  .line {
+    flex-grow: 1;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0 10px;
+  }
+  .year-btn {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: 700;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+  }
+  .year-btn:hover {
+    border-color: #ff8905;
+    color: #ff8905;
+    background: rgba(255, 137, 5, 0.1);
+  }
+  .year-btn.active {
+    background: #ff8905;
+    border-color: #ff8905;
+    color: black;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 137, 5, 0.5);
+  }
+  @media (max-width: 900px) {
+    .glass-card {
+        min-height: auto;
+        padding: 30px 20px;
+    }
+    .content-grid {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    .text-content { 
+      order: 2; 
+      min-height: auto;
+    } 
+    .image-content { order: 1; }
+    .img-container { height: 250px; }
+    .text-content p { min-height: auto; }
+    .timeline-nav {
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .line { display: none; }
+    .section-title { font-size: 1.8rem; }
+  }
+</style>

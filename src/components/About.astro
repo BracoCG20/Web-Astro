@@ -1,0 +1,302 @@
+---
+import { Image } from "astro:assets";
+
+// Imágenes generales
+import teamImg from '../assets/about1.png';     
+import forestImg from '../assets/backgroundAbout.jpeg';   
+import organicImg from '../assets/about3.png';  
+
+// Imágenes del Carrusel de Sostenibilidad (6 Imágenes)
+import cropImg1 from '../assets/about2.png';    
+import cropImg2 from '../assets/about2-2.png';
+import cropImg3 from '../assets/about2-3.png';    
+import cropImg4 from '../assets/about2-4.png';    
+import cropImg5 from '../assets/about2-5.png';
+import cropImg6 from '../assets/about2-6.png';    
+---
+
+<div class="sections-wrapper">
+
+  <section class="info-section white-bg" id="nosotros">
+    <div class="container">
+      <div class="bg-decoration"></div>
+      <div class="glass-card light-mode">
+        <div class="content-grid img-left">
+          <div class="image-wrapper">
+            <div class="leaf-shape">
+              <Image src={teamImg} alt="Equipo Sol de Palma" class="featured-img" />
+              <div class="orange-accent"></div>
+            </div>
+          </div>
+          <div class="text-wrapper">
+            <div class="header-group">
+              <div class="orange-line"></div>
+              <h2>SOL DE PALMA</h2>
+              <span class="slogan">Together We Grow</span>
+            </div>
+            <p>Con más de 10 años de excelencia operativa, Sol de Palma ha crecido con los pequeños agricultores hasta convertirse en el principal exportador de aceite crudo de palma del Perú.</p>
+            <a href="/nosotros" class="cta-button orange-outline">CONOCE MÁS</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="info-section dark-bg" id="sostenibilidad">
+    
+    <div class="background-image-container">
+      <Image src={forestImg} alt="Bosque de Palma" class="bg-img" />
+      <div class="dark-overlay"></div>
+    </div>
+
+    <div class="container">
+      <div class="glass-card dark-mode">
+        <div class="content-grid img-right"> 
+          
+          <div class="text-wrapper">
+            <div class="header-group">
+              <div class="orange-line"></div>
+              <h2>COMPROMISO CON LA SOSTENIBILIDAD</h2>
+            </div>
+            <p>
+              Garantizamos la preservación de los bosques y la biodiversidad. Nuestro modelo de negocio respeta el medio ambiente y promueve el desarrollo social de nuestras comunidades.
+            </p>
+            <a href="/sostenibilidad" class="cta-button white-outline">CONOCE MÁS</a>
+          </div>
+
+          <div class="image-wrapper" id="slider-wrapper">
+            <div class="leaf-shape slider-container">
+              
+              <Image src={cropImg1} alt="Cultivo 1" class="featured-img slide-img active" />
+              <Image src={cropImg2} alt="Cultivo 2" class="featured-img slide-img" />
+              <Image src={cropImg3} alt="Cultivo 3" class="featured-img slide-img" />
+              <Image src={cropImg4} alt="Cultivo 4" class="featured-img slide-img" />
+              <Image src={cropImg5} alt="Cultivo 5" class="featured-img slide-img" />
+              <Image src={cropImg6} alt="Cultivo 6" class="featured-img slide-img" />
+
+              <div class="orange-border-dynamic" id="dynamic-border"></div>
+              
+              <div class="floating-badge" id="dynamic-badge">
+                TRAZABILIDAD DESDE ORIGEN
+              </div>
+
+              <button class="slide-control" id="slide-btn" aria-label="Cambiar imagen">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                <div class="pulse-ring"></div>
+              </button>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="info-section white-bg" id="organica">
+    <div class="container">
+      <div class="bg-decoration left-pos"></div>
+      <div class="glass-card light-mode">
+        <div class="content-grid img-left">
+          <div class="image-wrapper">
+            <div class="leaf-shape">
+              <Image src={organicImg} alt="Agricultores Orgánicos" class="featured-img" />
+              <div class="orange-accent"></div>
+              <div class="circle-badge"><span>PROGRAMA<br>PALMA<br>ORGÁNICA</span></div>
+            </div>
+          </div>
+          <div class="text-wrapper">
+            <div class="header-group">
+              <div class="orange-line"></div>
+              <h2>PALMA ORGÁNICA</h2>
+            </div>
+            <p>Descubre cómo estamos transformando la industria de palma aceitera mediante prácticas orgánicas certificadas que cuidan la salud del suelo y del consumidor.</p>
+            <a href="/palma" class="cta-button orange-outline">CONOCE MÁS</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // 1. CONFIGURACIÓN DE TEXTOS (Edita aquí tus 6 textos)
+  const badgeTexts = [
+    "TRAZABILIDAD DESDE ORIGEN",  // Texto para Imagen 1
+    "BUENAS PRÁCTICAS AGRÍCOLAS",    // Texto para Imagen 2
+    "PASIÓN POR LA EXCELENCIA",    // Texto para Imagen 3
+    "INVESTIGACIÓN TRANSFORMADORA",    // Texto para Imagen 4
+    "COMPROMISO VERDE",    // Texto para Imagen 5
+    "POLÍTICA DE SOSTENIBILIDAD"     // Texto para Imagen 6
+  ];
+
+  const slideBtn = document.getElementById('slide-btn');
+  const border = document.getElementById('dynamic-border');
+  const badge = document.getElementById('dynamic-badge');
+  const images = document.querySelectorAll('.slide-img');
+  
+  let currentIndex = 0; 
+
+  const nextSlide = () => {
+    // A. Desactivar imagen actual
+    if (images[currentIndex]) {
+      images[currentIndex].classList.remove('active');
+    }
+
+    // B. Calcular siguiente índice (0 -> 1 -> ... -> 5 -> 0)
+    currentIndex = (currentIndex + 1) % images.length;
+
+    // C. Activar nueva imagen
+    if (images[currentIndex]) {
+      images[currentIndex].classList.add('active');
+    }
+
+    // D. Actualizar Texto del Badge usando el Array
+    if (badge) {
+      // Efecto simple de desvanecimiento
+      badge.style.opacity = '0'; 
+      setTimeout(() => {
+        // Si hay texto definido en el array úsalo, si no, usa un default
+        badge.innerText = badgeTexts[currentIndex] || "SOL DE PALMA";
+        badge.style.opacity = '1';
+      }, 200);
+    }
+
+    // E. Alternar Estilos (Par vs Impar) para movimiento dinámico
+    // Esto hace que el borde viaje de un lado a otro en cada cambio
+    const isOdd = currentIndex % 2 !== 0;
+
+    if (isOdd) {
+      // Posición Alternativa (Abajo-Izquierda)
+      border?.classList.add('alt-position');
+      badge?.classList.add('alt-badge');
+    } else {
+      // Posición Original (Arriba-Derecha)
+      border?.classList.remove('alt-position');
+      badge?.classList.remove('alt-badge');
+    }
+  };
+
+  // Eventos
+  slideBtn?.addEventListener('click', () => {
+    nextSlide();
+    resetTimer(); 
+  });
+
+  let autoSlide = setInterval(nextSlide, 5000);
+
+  function resetTimer() {
+    clearInterval(autoSlide);
+    autoSlide = setInterval(nextSlide, 5000);
+  }
+</script>
+
+<style>
+  /* --- ESTILOS GENERALES --- */
+  .sections-wrapper { width: 100%; font-family: 'Nunito', sans-serif; }
+  .info-section { position: relative; padding: 100px 20px; display: flex; justify-content: center; overflow: hidden; }
+  .container { width: 100%; max-width: 1200px; position: relative; z-index: 2; }
+  
+  .white-bg { background-color: #ffffff; background-image: radial-gradient(circle at 10% 20%, #fff9f0, #ffffff); }
+  .background-image-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+  .bg-img { width: 100%; height: 100%; object-fit: cover; }
+  .dark-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(2px); }
+  .bg-decoration { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255, 137, 5, 0.08), transparent 70%); border-radius: 50%; z-index: -1; top: 50%; right: -10%; }
+  .bg-decoration.left-pos { left: -10%; right: auto; }
+
+  .glass-card { border-radius: 30px; padding: 60px; transition: transform 0.3s ease; }
+  .light-mode { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05); }
+  .dark-mode { background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); }
+
+  .content-grid { display: grid; gap: 70px; align-items: center; }
+  .img-left { grid-template-columns: 0.8fr 1.2fr; }
+  .img-right { grid-template-columns: 1.2fr 0.8fr; }
+
+  /* --- IMÁGENES --- */
+  .image-wrapper { display: flex; justify-content: center; position: relative; }
+  .leaf-shape { position: relative; width: 100%; max-width: 380px; aspect-ratio: 1 / 1; }
+  .slider-container { overflow: visible; }
+
+  .featured-img { 
+    width: 100%; height: 100%; object-fit: cover; 
+    border-radius: 0 100px 0 100px; 
+    position: relative; z-index: 2; 
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  }
+
+  .slide-img { position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.8s ease-in-out; }
+  .slide-img.active { opacity: 1; position: relative; z-index: 2; }
+
+  /* --- BORDE DINÁMICO --- */
+  .orange-border-dynamic {
+    position: absolute; width: 100%; height: 100%; border-radius: 0 100px 0 100px; z-index: 1;
+    top: -10px; right: -10px; border: 6px solid #ff4500;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .orange-border-dynamic.alt-position {
+    top: 10px; right: auto; left: -10px; border-color: #ffaa55; border-width: 4px; transform: rotate(2deg);
+  }
+  
+  .orange-accent { position: absolute; top: -15px; left: -15px; width: 100%; height: 100%; border: 2px solid #ff8905; border-radius: 0 100px 0 100px; z-index: 1; transition: transform 0.4s ease; }
+
+  /* --- BADGE DINÁMICO --- */
+  .floating-badge { 
+    position: absolute; bottom: 20px; right: -20px; 
+    background-color: #ff4500; color: white; 
+    font-weight: 800; font-size: 0.8rem; padding: 10px 20px; 
+    border-radius: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 3; letter-spacing: 1px; 
+    transition: all 0.5s ease;
+  }
+  
+  .floating-badge.alt-badge {
+    background-color: #ffaa55; /* Naranja suave */
+    transform: translateY(2px);
+  }
+
+  .circle-badge { position: absolute; bottom: -20px; right: -20px; width: 100px; height: 100px; background-color: #00a651; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.7rem; text-align: center; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 3; }
+
+  /* --- BOTÓN INDICADOR --- */
+  .slide-control {
+    position: absolute; left: -25px; top: 50%; transform: translateY(-50%); z-index: 10;
+    width: 50px; height: 50px; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.4); color: white;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+  .slide-control:hover { background: #ff8905; border-color: #ff8905; transform: translateY(-50%) scale(1.1); }
+  .pulse-ring { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.5); animation: pulse 2s infinite; pointer-events: none; }
+  @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
+
+  /* --- TEXTO --- */
+  .text-wrapper { display: flex; flex-direction: column; justify-content: center; }
+  .white-bg .text-wrapper { color: #333; }
+  .dark-bg .text-wrapper { color: white; }
+  .orange-line { width: 60px; height: 4px; background-color: #ff8905; margin-bottom: 20px; border-radius: 2px; }
+  h2 { font-size: 2.5rem; font-weight: 800; line-height: 1.1; margin: 0 0 10px 0; text-transform: uppercase; }
+  .slogan { font-size: 1.5rem; color: #ff8905; text-transform: uppercase; letter-spacing: 2px; }
+  p { font-size: 1.1rem; line-height: 1.7; margin-bottom: 30px; opacity: 0.9; }
+
+  /* --- BOTONES --- */
+  .cta-button { display: inline-block; padding: 12px 35px; border-radius: 50px; font-weight: 800; text-decoration: none; text-transform: uppercase; font-size: 0.9rem; transition: all 0.3s ease; width: fit-content; cursor: pointer; }
+  .orange-outline { background: transparent; border: 2px solid #ff8905; color: #ff8905; }
+  .orange-outline:hover { background-color: #ff8905; color: #ffffff; box-shadow: 0 5px 15px rgba(255, 137, 5, 0.4); transform: translateY(-2px); }
+  .white-outline { background: transparent; border: 2px solid white; color: white; }
+  .white-outline:hover { background: white; color: black; box-shadow: 0 5px 15px rgba(255, 255, 255, 0.4); transform: translateY(-2px); }
+  
+  .leaf-shape:hover .orange-accent { transform: translate(12px, 12px); }
+
+  @media (max-width: 900px) {
+    .glass-card { padding: 40px 20px; }
+    .content-grid { display: flex; flex-direction: column; gap: 40px; text-align: center; }
+    .img-right { flex-direction: column-reverse; } 
+    .image-wrapper { margin-bottom: 20px; }
+    .leaf-shape { max-width: 280px; }
+    .header-group { display: flex; flex-direction: column; align-items: center; }
+    h2 { font-size: 2rem; }
+    .text-wrapper { align-items: center; }
+    .floating-badge, .circle-badge { right: 0; bottom: -15px; }
+    .slide-control { left: -15px; width: 40px; height: 40px; }
+  }
+</style>
