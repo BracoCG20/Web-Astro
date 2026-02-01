@@ -1,6 +1,18 @@
 ---
 import { Image } from "astro:assets";
 import logoPalma from '../assets/logo_soldepalma.webp';
+
+// Obtenemos la ruta actual (ej: "/nosotros")
+const currentPath = Astro.url.pathname;
+
+// Función auxiliar para saber si el link está activo
+const isActive = (path: string) => {
+  // Caso especial para el Home
+  if (path === '/' && currentPath === '/') return true;
+  // Para las demás páginas, verificamos si la ruta actual empieza con el path
+  if (path !== '/' && currentPath.startsWith(path)) return true;
+  return false;
+};
 ---
 
 <nav class="nav-container">
@@ -25,11 +37,11 @@ import logoPalma from '../assets/logo_soldepalma.webp';
     <div id="nav-menu" class="nav-links-wrapper">
       
       <ul class="nav-links">
-        <li><a href="/nosotros">NOSOTROS</a></li>
-        <li><a href="/cadena">CADENA INTEGRADA</a></li>
-        <li><a href="/sostenibilidad">SOSTENIBILIDAD</a></li>
-        <li><a href="/palma">PALMA ORGÁNICA</a></li>
-        <li><a href="/productos">PRODUCTOS</a></li>
+        <li><a href="/nosotros" class={isActive('/nosotros') ? 'active' : ''}>NOSOTROS</a></li>
+        <li><a href="/cadena" class={isActive('/cadena') ? 'active' : ''}>CADENA INTEGRADA</a></li>
+        <li><a href="/sostenibilidad" class={isActive('/sostenibilidad') ? 'active' : ''}>SOSTENIBILIDAD</a></li>
+        <li><a href="/palma" class={isActive('/palma') ? 'active' : ''}>PALMA ORGÁNICA</a></li>
+        <li><a href="/productos" class={isActive('/productos') ? 'active' : ''}>PRODUCTOS</a></li>
       </ul>
 
       <div class="lang-dropdown">
@@ -67,7 +79,7 @@ import logoPalma from '../assets/logo_soldepalma.webp';
 </script>
 
 <style>
-  /* --- ESTILOS BASE DEL NAVBAR --- */
+  /* --- ESTILOS BASE --- */
   .nav-container {
     background: rgba(60, 56, 52, 0.4);
     backdrop-filter: blur(12px);
@@ -75,7 +87,7 @@ import logoPalma from '../assets/logo_soldepalma.webp';
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 25px;
     margin: 20px auto;
-    width: calc(100% - 40px); /* Ajustado para márgenes móviles */
+    width: calc(100% - 40px);
     max-width: 1400px;
     padding: 10px 30px;
     color: white;
@@ -84,104 +96,11 @@ import logoPalma from '../assets/logo_soldepalma.webp';
     z-index: 100;
   }
 
-  .nav-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
+  .nav-content { display: flex; justify-content: space-between; align-items: center; }
   .logo-img { height: 45px; width: auto; flex-shrink: 0; }
 
-  /* --- HAMBURGUESA (ESTILOS GENERALES) --- */
-  /* Definimos su forma aquí, pero lo ocultamos por defecto (Desktop First) */
-  .hamburger {
-    display: none; /* Oculto por defecto */
-    flex-direction: column;
-    gap: 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    z-index: 102;
-    padding: 5px;
-  }
-
-  .bar {
-    width: 25px;
-    height: 3px;
-    background-color: white;
-    transition: all 0.3s ease;
-    border-radius: 2px;
-  }
-
-  /* Animación Hamburguesa Activa */
-  .hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-  .hamburger.active .bar:nth-child(2) { opacity: 0; }
-  .hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-  /* --- SELECTOR DE IDIOMA --- */
-  .lang-dropdown { position: relative; display: inline-block; }
-
-  .lang-trigger {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 20px;
-    color: white;
-    padding: 6px 15px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: inherit;
-    font-weight: 600;
-    font-size: 0.85rem;
-    transition: all 0.3s ease;
-  }
-  
-  /* Hover en el botón de idioma */
-  .lang-dropdown:hover .lang-trigger {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: #ff8905;
-    color: #ff8905;
-  }
-  
-  .lang-dropdown:hover .arrow { transform: rotate(180deg); }
-  .lang-trigger .arrow { transition: transform 0.3s ease; }
-
-  .lang-options {
-    position: absolute;
-    top: 120%;
-    right: 0;
-    width: 130px;
-    background: rgba(60, 56, 52, 0.9);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 15px;
-    padding: 8px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-  }
-
-  .lang-dropdown:hover .lang-options { opacity: 1; visibility: visible; transform: translateY(0); }
-
-  .lang-item {
-    display: flex; align-items: center; gap: 10px;
-    color: white; text-decoration: none; padding: 8px 12px;
-    font-size: 0.85rem; border-radius: 10px; transition: background 0.2s;
-  }
-  .lang-item:hover { background: rgba(255, 255, 255, 0.15); }
-  .flag { font-size: 1rem; }
-
-  /* --- ENLACES (ESTILOS COMUNES) --- */
-  .nav-links {
-    display: flex;
-    list-style: none;
-    gap: 30px;
-    margin: 0;
-    padding: 0;
-  }
+  /* --- ENLACES --- */
+  .nav-links { display: flex; list-style: none; gap: 30px; margin: 0; padding: 0; }
 
   .nav-links a {
     color: white;
@@ -193,7 +112,6 @@ import logoPalma from '../assets/logo_soldepalma.webp';
     display: inline-block;
   }
 
-  /* Línea animada */
   .nav-links a::after {
     content: '';
     position: absolute;
@@ -207,110 +125,55 @@ import logoPalma from '../assets/logo_soldepalma.webp';
     box-shadow: 0 0 8px rgba(255, 137, 5, 0.6);
   }
 
+  /* ESTADO HOVER */
   .nav-links a:hover { color: #ff8905; }
   .nav-links a:hover::after { transform: scaleX(1); }
 
-  /* =========================================
-     VISTA MÓVIL (< 1440px)
-     ========================================= */
-  @media (max-width: 1439px) {
-    
-    /* 1. HACER VISIBLE LA HAMBURGUESA */
-    .hamburger {
-      display: flex; /* ¡Esto es lo importante! */
-    }
-
-    /* 2. OCULTAR Y ESTILIZAR EL MENÚ DESPLEGABLE */
-    .nav-links-wrapper {
-      position: absolute;
-      top: 160%;
-      left: 0;
-      width: 100%;
-      background: rgba(60, 56, 52, 0.95); /* Fondo sólido semi-transparente */
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 30px;
-      padding: 40px 0;
-      
-      /* Oculto inicialmente */
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-20px);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 99;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    }
-
-    /* Clase activa para mostrar el menú */
-    .nav-links-wrapper.active {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-
-    .nav-links {
-      flex-direction: column;
-      gap: 25px;
-    }
-
-    .nav-links a {
-      font-size: 1.2rem; /* Texto más grande en móvil */
-    }
-
-    /* Ajuste del dropdown de idioma en móvil */
-    .lang-dropdown {
-      margin-top: 10px;
-    }
-    
-    .lang-options {
-      /* Centrar el desplegable de idiomas en móvil */
-      left: 50%;
-      right: auto;
-      transform: translateX(-50%) translateY(-10px);
-    }
-    
-    .lang-dropdown:hover .lang-options {
-      transform: translateX(-50%) translateY(0);
-    }
+  /* ESTADO ACTIVO (Página Actual) */
+  .nav-links a.active {
+    color: #ff8905;
+  }
+  .nav-links a.active::after {
+    transform: scaleX(1); /* Mantiene la línea visible */
   }
 
-  /* =========================================
-     VISTA ESCRITORIO (>= 1440px)
-     ========================================= */
+  /* --- HAMBURGUESA --- */
+  .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; z-index: 102; padding: 5px; }
+  .bar { width: 25px; height: 3px; background-color: white; transition: all 0.3s ease; border-radius: 2px; }
+  .hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+  .hamburger.active .bar:nth-child(2) { opacity: 0; }
+  .hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+  /* --- SELECTOR DE IDIOMA --- */
+  .lang-dropdown { position: relative; display: inline-block; }
+  .lang-trigger { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 20px; color: white; padding: 6px 15px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: inherit; font-weight: 600; font-size: 0.85rem; transition: all 0.3s ease; }
+  .lang-dropdown:hover .lang-trigger { background: rgba(255, 255, 255, 0.2); border-color: #ff8905; color: #ff8905; }
+  .lang-dropdown:hover .arrow { transform: rotate(180deg); }
+  .lang-trigger .arrow { transition: transform 0.3s ease; }
+  .lang-options { position: absolute; top: 120%; right: 0; width: 130px; background: rgba(60, 56, 52, 0.9); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 15px; padding: 8px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+  .lang-dropdown:hover .lang-options { opacity: 1; visibility: visible; transform: translateY(0); }
+  .lang-item { display: flex; align-items: center; gap: 10px; color: white; text-decoration: none; padding: 8px 12px; font-size: 0.85rem; border-radius: 10px; transition: background 0.2s; }
+  .lang-item:hover { background: rgba(255, 255, 255, 0.15); }
+  .lang-item.active { color: #ff8905; font-weight: bold; }
+  .flag { font-size: 1rem; }
+  .nav-links-wrapper { display: flex; align-items: center; gap: 40px; flex-grow: 1; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1439px) {
+    .hamburger { display: flex; }
+    .nav-links-wrapper { position: absolute; top: 160%; left: 0; width: 100%; background: rgba(60, 56, 52, 0.95); backdrop-filter: blur(20px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; align-items: center; gap: 30px; padding: 40px 0; opacity: 0; visibility: hidden; transform: translateY(-20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 99; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+    .nav-links-wrapper.active { opacity: 1; visibility: visible; transform: translateY(0); }
+    .nav-links { flex-direction: column; gap: 25px; }
+    .nav-links a { font-size: 1.2rem; }
+    .lang-dropdown { margin-top: 10px; }
+    .lang-options { left: 50%; right: auto; transform: translateX(-50%) translateY(-10px); }
+    .lang-dropdown:hover .lang-options { transform: translateX(-50%) translateY(0); }
+  }
+
   @media (min-width: 1440px) {
-    
-    .hamburger { display: none; } /* Aseguramos que se oculte */
-
-    .nav-links-wrapper {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 40px;
-      
-      /* Resetear propiedades de móvil */
-      position: static;
-      background: transparent;
-      border: none;
-      box-shadow: none;
-      padding: 0;
-      opacity: 1;
-      visibility: visible;
-      transform: none;
-      flex-grow: 1;
-    }
-
-    .nav-links {
-      flex-direction: row;
-      margin: 0 auto; /* Centra los links en el espacio disponible */
-    }
-    
-    .lang-dropdown {
-      margin-top: 0;
-    }
+    .hamburger { display: none; }
+    .nav-links-wrapper { display: flex; flex-direction: row; align-items: center; gap: 40px; position: static; background: transparent; border: none; box-shadow: none; padding: 0; opacity: 1; visibility: visible; transform: none; flex-grow: 1; }
+    .nav-links { flex-direction: row; margin: 0 auto; }
+    .lang-dropdown { margin-top: 0; }
   }
 </style>
